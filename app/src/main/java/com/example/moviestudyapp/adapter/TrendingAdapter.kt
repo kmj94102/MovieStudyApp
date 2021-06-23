@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moviestudyapp.databinding.CellTrendingBinding
 
-class TrendingAdapter(private val context: Context, private val list : List<String>) : RecyclerView.Adapter<TrendingAdapter.TrendingViewHolder>() {
+class TrendingAdapter(private val context: Context, private val list : List<Pair<String, Long?>>) : RecyclerView.Adapter<TrendingAdapter.TrendingViewHolder>() {
     private var listener : View.OnClickListener? = null
 
     inner class TrendingViewHolder(binding : CellTrendingBinding) : RecyclerView.ViewHolder(binding.root){
@@ -17,7 +17,7 @@ class TrendingAdapter(private val context: Context, private val list : List<Stri
 
         init {
             binding.root.setOnClickListener {
-                it.tag = adapterPosition
+                it.tag = list[adapterPosition].second
                 listener?.onClick(it)
             }
         }
@@ -27,7 +27,7 @@ class TrendingAdapter(private val context: Context, private val list : List<Stri
         TrendingViewHolder(CellTrendingBinding.inflate(LayoutInflater.from(parent.context), parent, false))
 
     override fun onBindViewHolder(holder: TrendingViewHolder, position: Int) {
-        Glide.with(context).load(list[position]).centerCrop().into(holder.imageView)
+        Glide.with(context).load(list[position].first).centerCrop().into(holder.imageView)
     }
 
     override fun getItemCount(): Int {

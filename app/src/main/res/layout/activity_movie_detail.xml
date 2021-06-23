@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.coordinatorlayout.widget.CoordinatorLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".MovieDetailActivity">
+
+    <ImageView
+        android:id="@+id/img_backgtround"
+        android:layout_width="match_parent"
+        android:layout_height="320dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:background="#ac8ec8"/>
+
+    <include
+        android:id="@+id/behavior"
+        layout="@layout/behavior_movie_detail"/>
+
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

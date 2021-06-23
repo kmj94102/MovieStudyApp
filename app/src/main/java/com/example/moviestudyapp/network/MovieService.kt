@@ -2,6 +2,7 @@ package com.example.moviestudyapp.network
 
 import com.example.moviestudyapp.BuildConfig
 import com.example.moviestudyapp.Constants
+import kotlinx.coroutines.flow.Flow
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -28,12 +29,12 @@ interface MovieService {
         @Path("movie_id") movieId : Long?,
         @Query("api_key") apiKey: String?= BuildConfig.MOVIE_API_KEY,
         @Query("language") language : String?= Constants.MOVIE_API_LANGUAGE
-    ): Call<MovieDetail>
+    ): MovieDetail
 
     @GET("movie/{movie_id}/credits")
     suspend fun getCredits(
         @Path("movie_id") movieId : Long?,
         @Query("api_key") apiKey: String?= BuildConfig.MOVIE_API_KEY,
         @Query("language") language : String?= Constants.MOVIE_API_LANGUAGE
-    ): Call<CreditsList>
+    ): CreditsList
 }
