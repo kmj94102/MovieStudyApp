@@ -68,14 +68,14 @@ class MovieDetailActivity : AppCompatActivity(), CoroutineScope {
             }
         )
 
-        binding.behavior.rvGenre.adapter = GenreAdapter(genreList)
+        binding.rvGenre.adapter = GenreAdapter(genreList)
     }
 
     private suspend fun bindMovieDetail(movieDetail: MovieDetail) = withContext(coroutineContext){
-        binding.behavior.txtVoteAverage.text = "${movieDetail.vote_average}"
-        binding.behavior.txtTitle.text = movieDetail.title
-        binding.behavior.txtStory.text = movieDetail.overview
-        binding.behavior.txtTitle.isSelected = true
+        binding.txtVoteAverage.text = "${movieDetail.vote_average}"
+        binding.txtTitle.text = movieDetail.title
+        binding.txtStory.text = movieDetail.overview.plus(movieDetail.overview).plus(movieDetail.overview)
+        binding.txtTitle.isSelected = true
         Glide
             .with(this@MovieDetailActivity)
             .load("${Constants.MOVIE_API_START_IMAGE_URL}${movieDetail.backdrop_path}")
@@ -84,7 +84,7 @@ class MovieDetailActivity : AppCompatActivity(), CoroutineScope {
     }
 
     private suspend fun bindCreditInfoAdapter(creditsList: CreditsList) = withContext(coroutineContext){
-        binding.behavior.rvCast.adapter = CastInfoAdapter(this@MovieDetailActivity, creditsList.cast)
+        binding.rvCast.adapter = CastInfoAdapter(this@MovieDetailActivity, creditsList.cast)
     }
 
     override fun onDestroy() {
