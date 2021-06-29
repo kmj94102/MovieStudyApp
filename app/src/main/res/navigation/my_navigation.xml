@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/navigation"
+    app:startDestination="@id/navigationHome">
+
+    <fragment
+        android:id="@+id/navigationHome"
+        android:name="com.example.moviestudyapp.HomeFragment"
+        android:label="@string/home"
+        tools:layout="@layout/fragment_home"/>
+
+    <fragment
+        android:id="@+id/navigationSearch"
+        android:name="com.example.moviestudyapp.SearchFragment"
+        android:label="@string/search"
+        tools:layout="@layout/fragment_search"/>
+
+    <fragment
+        android:id="@+id/navigationMyPage"
+        android:name="com.example.moviestudyapp.MyPageFragment"
+        android:label="@string/my_page"
+        tools:layout="@layout/fragment_my_page"/>
+
+    <fragment
+        android:id="@+id/navigationSettings"
+        android:name="com.example.moviestudyapp.SettingsFragment"
+        android:label="@string/settings"
+        tools:layout="@layout/fragment_settings"/>
+
+</navigation>

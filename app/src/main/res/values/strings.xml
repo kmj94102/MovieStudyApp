@@ -1,7 +1,11 @@
 <resources>
     <string name="app_name">MovieStudyApp</string>
     <string name="trending">트랜드</string>
-    <string name="story">Story</string>
-    <string name="cast">Cast</string>
+    <string name="story">스토리</string>
+    <string name="cast">출연</string>
     <string name="genre_recommendation">장르 추천</string>
+    <string name="home">홈</string>
+    <string name="search">검색</string>
+    <string name="my_page">마이페이지</string>
+    <string name="settings">설정</string>
 </resources>

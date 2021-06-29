@@ -74,7 +74,7 @@ class MovieDetailActivity : AppCompatActivity(), CoroutineScope {
     private suspend fun bindMovieDetail(movieDetail: MovieDetail) = withContext(coroutineContext){
         binding.txtVoteAverage.text = "${movieDetail.vote_average}"
         binding.txtTitle.text = movieDetail.title
-        binding.txtStory.text = movieDetail.overview.plus(movieDetail.overview).plus(movieDetail.overview)
+        binding.txtStory.text = movieDetail.overview
         binding.txtTitle.isSelected = true
         Glide
             .with(this@MovieDetailActivity)
