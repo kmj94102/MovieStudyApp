@@ -4,11 +4,12 @@ import com.example.moviestudyapp.BuildConfig
 import com.example.moviestudyapp.Constants
 import kotlinx.coroutines.flow.Flow
 import retrofit2.Call
+import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
 
-interface MovieService {
+interface MovieApi {
     @GET("movie/{movie_id}")
     suspend fun getMovie(
         @Path("movie_id") id : Int,
@@ -22,14 +23,14 @@ interface MovieService {
         @Path("media_type") mediaType : String?,     // select => [all, movie, tv, person]
         @Path("time_window") timeWindow : String?,   // select => [day, week]
         @Query("api_key") apiKey : String?= BuildConfig.MOVIE_API_KEY
-    ): TrendingList
+    ): Response<TrendingList>
 
     @GET("movie/{movie_id}")
     suspend fun getMovieDetail(
         @Path("movie_id") movieId : Long?,
         @Query("api_key") apiKey: String?= BuildConfig.MOVIE_API_KEY,
         @Query("language") language : String?= Constants.MOVIE_API_LANGUAGE
-    ): MovieDetail
+    ): Response<MovieDetail>
 
     @GET("movie/{movie_id}/credits")
     suspend fun getCredits(

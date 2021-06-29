@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moviestudyapp.databinding.CellTrendingBinding
 
-class TrendingAdapter(private val context: Context, private val list : List<Pair<String, Long?>>) : RecyclerView.Adapter<TrendingAdapter.TrendingViewHolder>() {
+class TrendingAdapter(private val context: Context, private var list : List<Pair<String, Long?>>) : RecyclerView.Adapter<TrendingAdapter.TrendingViewHolder>() {
     private var listener : View.OnClickListener? = null
 
     inner class TrendingViewHolder(binding : CellTrendingBinding) : RecyclerView.ViewHolder(binding.root){
@@ -32,6 +32,11 @@ class TrendingAdapter(private val context: Context, private val list : List<Pair
 
     override fun getItemCount(): Int {
         return list.size
+    }
+
+    fun addTrendingList(list : List<Pair<String, Long?>>) {
+        this.list = list
+        notifyDataSetChanged()
     }
 
     fun setListener(listener : View.OnClickListener){

@@ -1,4 +1,4 @@
-package com.example.moviestudyapp
+package com.example.moviestudyapp.presentation.home
 
 import android.view.View
 import androidx.core.view.ViewCompat

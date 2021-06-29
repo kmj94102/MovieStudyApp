@@ -1,9 +1,9 @@
-package com.example.moviestudyapp
+package com.example.moviestudyapp.presentation.movie_detail
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import com.bumptech.glide.Glide
+import com.example.moviestudyapp.Constants
 import com.example.moviestudyapp.adapter.CastInfoAdapter
 import com.example.moviestudyapp.adapter.GenreAdapter
 import com.example.moviestudyapp.databinding.ActivityMovieDetailBinding
@@ -43,8 +43,8 @@ class MovieDetailActivity : AppCompatActivity(), CoroutineScope {
             val movieDetail = getMovieDetail(movieId)
             val creditsList = getCredits(movieId)
 
-            bindGenreAdapter(movieDetail)
-            bindMovieDetail(movieDetail)
+//            bindGenreAdapter(movieDetail)
+//            bindMovieDetail(movieDetail)
             bindCreditInfoAdapter(creditsList)
         }catch (e: Exception){
             e.printStackTrace()
@@ -52,11 +52,11 @@ class MovieDetailActivity : AppCompatActivity(), CoroutineScope {
     }
 
     private suspend fun getMovieDetail(movieId : Long) = withContext(Dispatchers.IO){
-        RetrofitUtil.movieService.getMovieDetail(movieId = movieId)
+        RetrofitUtil.MOVIE_API.getMovieDetail(movieId = movieId)
     }
 
     private suspend fun getCredits(movieId : Long)= withContext(Dispatchers.IO){
-        RetrofitUtil.movieService.getCredits(movieId)
+        RetrofitUtil.MOVIE_API.getCredits(movieId)
     }
 
     private suspend fun bindGenreAdapter(movieDetail: MovieDetail) = withContext(coroutineContext) {

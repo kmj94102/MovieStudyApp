@@ -12,7 +12,7 @@ import java.util.concurrent.TimeUnit
 
 object RetrofitUtil {
 
-    val movieService : MovieService by lazy { getMovieRetrofit().create(MovieService::class.java) }
+    val MOVIE_API : MovieApi by lazy { getMovieRetrofit().create(MovieApi::class.java) }
 
     private fun getMovieRetrofit() : Retrofit{
         return Retrofit.Builder()
