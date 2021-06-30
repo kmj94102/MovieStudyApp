@@ -14,7 +14,11 @@ class MovieStudyApplication : Application() {
 
         startKoin {
             androidLogger(
-                Level.ERROR
+                if(BuildConfig.DEBUG){
+                    Level.ERROR
+                }else{
+                    Level.NONE
+                }
             )
             androidContext(this@MovieStudyApplication)
             modules(appModule)

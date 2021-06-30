@@ -22,7 +22,8 @@ interface MovieApi {
     suspend fun getTrendingMovieList(
         @Path("media_type") mediaType : String?,     // select => [all, movie, tv, person]
         @Path("time_window") timeWindow : String?,   // select => [day, week]
-        @Query("api_key") apiKey : String?= BuildConfig.MOVIE_API_KEY
+        @Query("api_key") apiKey : String?= BuildConfig.MOVIE_API_KEY,
+        @Query("language") language : String?= Constants.MOVIE_API_LANGUAGE
     ): Response<TrendingList>
 
     @GET("movie/{movie_id}")

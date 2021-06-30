@@ -2,17 +2,23 @@ package com.example.moviestudyapp.presentation.home
 
 import android.content.Intent
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import com.example.moviestudyapp.presentation.BaseFragment
+import androidx.viewpager2.widget.ViewPager2
 import com.example.moviestudyapp.Constants
-import com.example.moviestudyapp.presentation.movie_detail.MovieDetailActivity
 import com.example.moviestudyapp.adapter.TrendingAdapter
 import com.example.moviestudyapp.databinding.FragmentHomeBinding
-import kotlinx.coroutines.*
+import com.example.moviestudyapp.presentation.BaseFragment
+import com.example.moviestudyapp.presentation.movie_detail.MovieDetailActivity
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.cancel
 import org.koin.android.viewmodel.ext.android.viewModel
 import kotlin.coroutines.CoroutineContext
 
@@ -53,14 +59,10 @@ internal class HomeFragment : BaseFragment<HomeViewModel>(), CoroutineScope {
     }
 
     private fun initViews() = with(binding){
-
-        trendingAdapter = TrendingAdapter(requireActivity(), listOf()).apply {
-            setListener { view ->
-                val movieId = view.tag as Long?
-                val intent = Intent(requireContext(), MovieDetailActivity::class.java)
-                intent.putExtra(Constants.INTENT_MOVIE_ID, movieId)
-                startActivity(intent)
-            }
+        trendingAdapter = TrendingAdapter(requireActivity(), listOf()){ movieId ->
+            val intent = Intent(requireContext(), MovieDetailActivity::class.java)
+            intent.putExtra(Constants.INTENT_MOVIE_ID, movieId)
+            startActivity(intent)
         }
 
         vpTrending.apply {
@@ -68,6 +70,18 @@ internal class HomeFragment : BaseFragment<HomeViewModel>(), CoroutineScope {
             offscreenPageLimit = 3
             setPageTransformer(SliderTransformer(3))
         }
+
+        vpTrending.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
+            override fun onPageSelected(position: Int) {
+                super.onPageSelected(position)
+                Handler(Looper.getMainLooper()).postDelayed({
+                    val trendingItem = trendingAdapter.currentItem(position)
+                    ratingBar.rating = (trendingItem.vote_average ?: 0.0f) / 2f
+                    txtRating.text = "${trendingItem.vote_average ?: 0.0f}"
+                    txtMovieTitle.text = "${trendingItem.title}"
+                }, 100)
+            }
+        })
     }
 
     private fun handleLoadingState() = with(binding){
@@ -75,12 +89,12 @@ internal class HomeFragment : BaseFragment<HomeViewModel>(), CoroutineScope {
     }
 
     private fun handleSuccessState(homeState: HomeState.Success) = with(binding){
-        val convertList = homeState.trendingList.results.map {
-            Pair("${Constants.MOVIE_API_START_IMAGE_URL}${it.backdrop_path}", it.id)
+        if(::trendingAdapter.isInitialized.not()){
+            initViews()
         }
 
         progressBar.isVisible = false
-        trendingAdapter.addTrendingList(convertList)
+        trendingAdapter.addTrendingList(homeState.trendingList.results)
     }
 
     override fun onDestroy() {
