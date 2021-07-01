@@ -1,4 +1,4 @@
-package com.example.moviestudyapp.adapter
+package com.example.moviestudyapp.presentation.adapter
 
 import android.content.Context
 import android.view.LayoutInflater
@@ -8,9 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moviestudyapp.Constants
 import com.example.moviestudyapp.databinding.CellTrendingBinding
-import com.example.moviestudyapp.network.TrendingListResult
+import com.example.moviestudyapp.network.TrendingList
 
-class TrendingAdapter(private val context: Context, private var trendingList : List<TrendingListResult>, val trendingSelectListener : (Long?) -> Unit) : RecyclerView.Adapter<TrendingAdapter.TrendingViewHolder>() {
+class TrendingAdapter(private val context: Context, private var trendingList : List<TrendingList>, val trendingSelectListener : (Long?) -> Unit) : RecyclerView.Adapter<TrendingAdapter.TrendingViewHolder>() {
 
     inner class TrendingViewHolder(binding : CellTrendingBinding) : RecyclerView.ViewHolder(binding.root){
         var imageView: ImageView = binding.imageView
@@ -33,7 +33,7 @@ class TrendingAdapter(private val context: Context, private var trendingList : L
         return trendingList.size
     }
 
-    fun addTrendingList(trendingList : List<TrendingListResult>) {
+    fun addTrendingList(trendingList : List<TrendingList>) {
         this.trendingList = trendingList
         notifyDataSetChanged()
     }

@@ -4,8 +4,8 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import com.bumptech.glide.Glide
 import com.example.moviestudyapp.Constants
-import com.example.moviestudyapp.adapter.CastInfoAdapter
-import com.example.moviestudyapp.adapter.GenreAdapter
+import com.example.moviestudyapp.presentation.adapter.CastInfoAdapter
+import com.example.moviestudyapp.presentation.adapter.GenreAdapter
 import com.example.moviestudyapp.databinding.ActivityMovieDetailBinding
 import com.example.moviestudyapp.network.CreditsList
 import com.example.moviestudyapp.network.MovieDetail

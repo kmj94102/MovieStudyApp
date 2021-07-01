@@ -94,12 +94,12 @@
             tools:rating="3"/>
 
         <TextView
-            android:id="@+id/txtGenre"
+            android:id="@+id/txtRecommendMovie"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="20dp"
             android:layout_marginStart="20dp"
-            android:text="@string/genre_recommendation"
+            android:text="@string/recommendation_movie"
             android:textColor="@color/main_white_color"
             android:textSize="20sp"
             android:textStyle="bold"
@@ -107,18 +107,20 @@
             app:layout_constraintTop_toBottomOf="@id/ratingBar"
             app:layout_constraintStart_toStartOf="parent"/>
 
-        <androidx.viewpager2.widget.ViewPager2
-            android:id="@+id/vpGenre"
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvRecommendMovie"
             android:layout_width="0dp"
             android:layout_height="370dp"
-            android:paddingStart="20dp"
             android:layout_marginTop="20dp"
-            android:paddingEnd="85dp"
-            android:clipChildren="false"
+            android:paddingStart="10dp"
+            android:paddingEnd="10dp"
             android:clipToPadding="false"
-            app:layout_constraintTop_toBottomOf="@id/txtGenre"
+            android:orientation="horizontal"
+            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+            app:layout_constraintTop_toBottomOf="@id/txtRecommendMovie"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"/>
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:listitem="@layout/cell_similar"/>
 
         <ProgressBar
             android:id="@+id/progressBar"
@@ -129,6 +131,37 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintEnd_toEndOf="parent"/>
+
+        <TextView
+            android:id="@+id/txtError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/error_api_call"
+            android:textColor="@color/white"
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/binggrae_bold"
+            android:gravity="center"
+            android:visibility="gone"
+            app:layout_constraintVertical_chainStyle="packed"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toTopOf="@id/btnError"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:visibility="visible"/>
+
+        <Button
+            android:id="@+id/btnError"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:text="@string/refresh"
+            android:visibility="gone"
+            app:layout_constraintTop_toBottomOf="@id/txtError"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            tools:visibility="visible"/>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

@@ -5,14 +5,14 @@ data class Movie(
     val overview : String?
 )
 
-data class TrendingList(
+data class TrendingListResult(
     val page : Long?,
-    val results : List<TrendingListResult>,
+    val results : List<TrendingList>,
     val total_pages : Long?,
     val total_results : Long?
 )
 
-data class TrendingListResult(
+data class TrendingList(
     val vote_average : Float?,
     val overview : String?,
     val release_date : String?,
@@ -28,6 +28,24 @@ data class TrendingListResult(
     val title : String?,
     val popularity : Float?,
     val media_type : String?
+)
+
+data class SimilarListResult(
+    val results : List<SimilarList>
+)
+
+data class SimilarList(
+    val video : Boolean?,
+    val title : String?,
+    val overview : String?,
+    val release_date : String?,
+    val vote_count : Long?,
+    val adult : Boolean?,
+    val backdrop_path : String?,
+    val id : Long?,
+    val genre_ids : List<Int>,
+    val vote_average : Float?,
+    val poster_path : String?
 )
 
 data class MovieDetail(

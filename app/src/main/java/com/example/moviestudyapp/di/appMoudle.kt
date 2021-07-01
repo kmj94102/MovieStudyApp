@@ -4,6 +4,7 @@ import com.example.moviestudyapp.BuildConfig
 import com.example.moviestudyapp.Constants
 import com.example.moviestudyapp.data.repository.MovieRepository
 import com.example.moviestudyapp.data.repository.MovieRepositoryImpl
+import com.example.moviestudyapp.domain.GetSimilarMovieListUseCase
 import com.example.moviestudyapp.domain.GetTrendingMovieListUseCase
 import com.example.moviestudyapp.network.MovieApi
 import com.example.moviestudyapp.presentation.home.HomeViewModel
@@ -50,8 +51,9 @@ internal val appModule = module {
 
     // UseCase
     factory { GetTrendingMovieListUseCase(get()) }
+    factory { GetSimilarMovieListUseCase(get()) }
 
     // ViewModel
-    viewModel { HomeViewModel(get()) }
+    viewModel { (movieId : Long?) -> HomeViewModel(movieId, get(), get()) }
 
 }

@@ -1,6 +1,7 @@
 package com.example.moviestudyapp.presentation.home
 
-import com.example.moviestudyapp.network.TrendingList
+import com.example.moviestudyapp.network.SimilarListResult
+import com.example.moviestudyapp.network.TrendingListResult
 
 sealed class HomeState {
 
@@ -9,7 +10,8 @@ sealed class HomeState {
     object Loading: HomeState()
 
     data class Success(
-        val trendingList: TrendingList
+        val trendingList: TrendingListResult,
+        val similarListResult: SimilarListResult
     ) : HomeState()
 
     object Error : HomeState()

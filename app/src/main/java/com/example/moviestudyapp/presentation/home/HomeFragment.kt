@@ -11,15 +11,17 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.viewpager2.widget.ViewPager2
 import com.example.moviestudyapp.Constants
-import com.example.moviestudyapp.adapter.TrendingAdapter
+import com.example.moviestudyapp.presentation.adapter.TrendingAdapter
 import com.example.moviestudyapp.databinding.FragmentHomeBinding
 import com.example.moviestudyapp.presentation.BaseFragment
+import com.example.moviestudyapp.presentation.adapter.SimilarAdapter
 import com.example.moviestudyapp.presentation.movie_detail.MovieDetailActivity
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
 import kotlinx.coroutines.cancel
 import org.koin.android.viewmodel.ext.android.viewModel
+import org.koin.core.parameter.parametersOf
 import kotlin.coroutines.CoroutineContext
 
 internal class HomeFragment : BaseFragment<HomeViewModel>(), CoroutineScope {
@@ -29,9 +31,14 @@ internal class HomeFragment : BaseFragment<HomeViewModel>(), CoroutineScope {
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + job
 
-    override val viewModel: HomeViewModel by viewModel()
+    override val viewModel: HomeViewModel by viewModel{
+        parametersOf(
+            null
+        )
+    }
 
     private lateinit var trendingAdapter : TrendingAdapter
+    private lateinit var similarAdapter: SimilarAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
         FragmentHomeBinding.inflate(inflater, container, false).also { binding = it }.root
@@ -52,13 +59,14 @@ internal class HomeFragment : BaseFragment<HomeViewModel>(), CoroutineScope {
                     handleSuccessState(it)
                 }
                 is HomeState.Error -> {
-
+                    handleErrorState()
                 }
             }
         }
     }
 
     private fun initViews() = with(binding){
+        // 트래드 뷰페이저 설정
         trendingAdapter = TrendingAdapter(requireActivity(), listOf()){ movieId ->
             val intent = Intent(requireContext(), MovieDetailActivity::class.java)
             intent.putExtra(Constants.INTENT_MOVIE_ID, movieId)
@@ -82,6 +90,15 @@ internal class HomeFragment : BaseFragment<HomeViewModel>(), CoroutineScope {
                 }, 100)
             }
         })
+
+        // 영화추천 리사이클러뷰 설정
+        similarAdapter = SimilarAdapter(requireActivity()){ movieId ->
+            val intent = Intent(requireContext(), MovieDetailActivity::class.java)
+            intent.putExtra(Constants.INTENT_MOVIE_ID, movieId)
+            startActivity(intent)
+        }
+
+        rvRecommendMovie.adapter = similarAdapter
     }
 
     private fun handleLoadingState() = with(binding){
@@ -94,7 +111,41 @@ internal class HomeFragment : BaseFragment<HomeViewModel>(), CoroutineScope {
         }
 
         progressBar.isVisible = false
+        successViewVisible()
+
         trendingAdapter.addTrendingList(homeState.trendingList.results)
+
+        similarAdapter.submitList(homeState.similarListResult.results)
+
+    }
+
+    private fun handleErrorState() = with(binding){
+        progressBar.isVisible = false
+        errorViewVisible()
+    }
+
+    private fun successViewVisible() = with(binding){
+        txtTrending.isVisible = true
+        vpTrending.isVisible = true
+        txtMovieTitle.isVisible = true
+        txtRating.isVisible = true
+        ratingBar.isVisible = true
+        txtRecommendMovie.isVisible = true
+        rvRecommendMovie.isVisible = true
+        txtError.isVisible = false
+        btnError.isVisible = false
+    }
+
+    private fun errorViewVisible() = with(binding){
+        txtTrending.isVisible = false
+        vpTrending.isVisible = false
+        txtMovieTitle.isVisible = false
+        txtRating.isVisible = false
+        ratingBar.isVisible = false
+        txtRecommendMovie.isVisible = false
+        rvRecommendMovie.isVisible = false
+        txtError.isVisible = true
+        btnError.isVisible = true
     }
 
     override fun onDestroy() {

@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:background="@color/main_color">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/cardSimilar"
+        android:layout_width="250dp"
+        android:layout_height="300dp"
+        app:cardCornerRadius="20dp"
+        app:layout_constraintTop_toTopOf="@id/cardSimilar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <ImageView
+            android:id="@+id/imgSimilar"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:scaleType="centerCrop"
+            tools:src="@drawable/test_image"/>
+
+    </androidx.cardview.widget.CardView>
+
+    <TextView
+        android:id="@+id/txtSimilarTitle"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="13dp"
+        android:layout_marginStart="7dp"
+        android:layout_marginEnd="7dp"
+        android:maxLines="1"
+        android:ellipsize="end"
+        android:textColor="@color/main_white_color"
+        android:textSize="18sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/binggrae_bold"
+        app:layout_constraintTop_toBottomOf="@id/cardSimilar"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:text="영화 제목"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>
