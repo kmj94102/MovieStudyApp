@@ -9,5 +9,8 @@
     <string name="my_page">마이페이지</string>
     <string name="settings">설정</string>
     <string name="error_api_call">API 호출 중 오류가 발생하였습니다.\n다시 시도해주세요</string>
+    <string name="error_no_movie_search_results">영화 조회 결과가 없습니다.</string>
     <string name="refresh">새로고침</string>
+    <string name="try_again">다시 검색하기</string>
+    <string name="recent_searches">최근 검색어</string>
 </resources>

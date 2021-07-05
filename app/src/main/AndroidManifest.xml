@@ -21,7 +21,10 @@
             </intent-filter>
         </activity>
         <activity android:name=".presentation.movie_detail.MovieDetailActivity" android:exported="true"/>
-        <activity android:name=".MainActivity" android:exported="true"/>
+        <activity
+            android:name=".MainActivity"
+            android:exported="true"
+            android:windowSoftInputMode="adjustPan"/>
     </application>
 
 </manifest>

@@ -9,17 +9,18 @@ import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.example.moviestudyapp.Constants
 import com.example.moviestudyapp.databinding.CellSimilarBinding
+import com.example.moviestudyapp.network.MovieSearchList
 import com.example.moviestudyapp.network.SimilarList
 import com.example.moviestudyapp.network.SimilarListResult
 import com.example.moviestudyapp.network.TrendingList
 
-class SimilarAdapter(private val context: Context, val similarSelectListener : (Long?) -> Unit) : ListAdapter<SimilarList, SimilarAdapter.SimilarViewHolder>(diffUtil){
+class SearchMovieAdapter(private val context: Context, val searchMovieSelectListener : (Long?) -> Unit) : ListAdapter<MovieSearchList, SearchMovieAdapter.SimilarViewHolder>(diffUtil){
 
     inner class SimilarViewHolder(private val binding : CellSimilarBinding) : RecyclerView.ViewHolder(binding.root){
 
         init {
             binding.root.setOnClickListener {
-                similarSelectListener(currentList[layoutPosition].id)
+                searchMovieSelectListener(currentList[layoutPosition].id)
             }
         }
 
@@ -37,11 +38,11 @@ class SimilarAdapter(private val context: Context, val similarSelectListener : (
     }
 
     companion object{
-        val diffUtil = object : DiffUtil.ItemCallback<SimilarList>(){
+        val diffUtil = object : DiffUtil.ItemCallback<MovieSearchList>(){
 
-            override fun areItemsTheSame(oldItem: SimilarList, newItem: SimilarList): Boolean = oldItem == newItem
+            override fun areItemsTheSame(oldItem: MovieSearchList, newItem: MovieSearchList): Boolean = oldItem == newItem
 
-            override fun areContentsTheSame(oldItem: SimilarList, newItem: SimilarList): Boolean  = oldItem.id == newItem.id
+            override fun areContentsTheSame(oldItem: MovieSearchList, newItem: MovieSearchList): Boolean  = oldItem.id == newItem.id
 
         }
     }

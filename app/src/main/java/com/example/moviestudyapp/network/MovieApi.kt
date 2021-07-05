@@ -50,4 +50,14 @@ interface MovieApi {
         @Query("api_key") apiKey: String?= BuildConfig.MOVIE_API_KEY,
         @Query("language") language : String?= Constants.MOVIE_API_LANGUAGE
     ): Response<CreditsList>
+
+    // 영화 검색
+    @GET("search/movie")
+    suspend fun getSearchMovies(
+        @Query("api_key") apiKey: String?= BuildConfig.MOVIE_API_KEY,
+        @Query("language") language: String?= Constants.MOVIE_API_LANGUAGE,
+        @Query("include_adult") includeAdult : Boolean? = true,
+        @Query("page") page : Int? = 1,
+        @Query("query") query : String?
+    ) : Response<MovieSearchResult>
 }
