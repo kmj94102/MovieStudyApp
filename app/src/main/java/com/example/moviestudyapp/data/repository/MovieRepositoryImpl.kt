@@ -26,8 +26,10 @@ class MovieRepositoryImpl(
             ?: throw RuntimeException("getMovieDetail API 호출 오류")
     }
 
-    override suspend fun getCredits(movieId: Long?): CreditsList {
-        return CreditsList(null, listOf())
+    override suspend fun getCredits(movieId: Long?): CreditsList = withContext(dispatcher){
+        movieApi.getCredits(movieId = movieId)
+            .body()
+            ?: throw RuntimeException("getCredits API 호출 오류")
     }
 
 }

@@ -24,7 +24,10 @@ internal class HomeViewModel(
         _homeLiveData.postValue(HomeState.Loading)
         try {
             val trendingList = getTrendingMovieListUseCase(MEDIA_TYPE, TIME_WINDOW)
-            val similarList = getSimilarMovieListUseCase(movieId ?: trendingList.results[0].id)
+            if(movieId == null || movieId == 0L){
+                movieId = trendingList.results[0].id
+            }
+            val similarList = getSimilarMovieListUseCase(movieId)
             _homeLiveData.postValue(HomeState.Success(trendingList, similarList))
         }catch (e: Exception){
             e.printStackTrace()

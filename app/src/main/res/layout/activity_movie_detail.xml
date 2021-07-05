@@ -78,22 +78,25 @@
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginEnd="20dp"
-        android:background="@drawable/ic_heart_fill_24"
+        android:background="@drawable/ic_heart_24"
         app:layout_constraintTop_toTopOf="@id/rvGenre"
         app:layout_constraintBottom_toBottomOf="@id/rvGenre"
-        app:layout_constraintEnd_toEndOf="parent"/>
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:background="@drawable/ic_heart_fill_24"/>
 
     <View
         android:id="@+id/viewBookMark"
         android:layout_width="24dp"
         android:layout_height="24dp"
         android:layout_marginEnd="15dp"
-        android:background="@drawable/ic_bookmark_fill_24"
+        android:background="@drawable/ic_bookmark_24"
         app:layout_constraintTop_toTopOf="@id/viewHeart"
         app:layout_constraintBottom_toBottomOf="@id/viewHeart"
-        app:layout_constraintEnd_toStartOf="@id/viewHeart"/>
+        app:layout_constraintEnd_toStartOf="@id/viewHeart"
+        tools:background="@drawable/ic_bookmark_fill_24"/>
 
     <ScrollView
+        android:id="@+id/scrollView"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:layout_marginTop="15dp"
@@ -147,7 +150,7 @@
                 app:layout_constraintTop_toBottomOf="@id/txtStory"/>
 
             <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_cast"
+                android:id="@+id/rvCast"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:paddingStart="20dp"
@@ -164,5 +167,46 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </ScrollView>
+
+    <ProgressBar
+        android:id="@+id/progressBar"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"/>
+
+    <TextView
+        android:id="@+id/txtError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/error_api_call"
+        android:textColor="@color/white"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:fontFamily="@font/binggrae_bold"
+        android:gravity="center"
+        android:visibility="gone"
+        app:layout_constraintVertical_chainStyle="packed"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toTopOf="@id/btnError"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:visibility="visible"/>
+
+    <Button
+        android:id="@+id/btnError"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:text="@string/refresh"
+        android:visibility="gone"
+        app:layout_constraintTop_toBottomOf="@id/txtError"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:visibility="visible"/>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

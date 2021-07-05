@@ -49,5 +49,5 @@ interface MovieApi {
         @Path("movie_id") movieId : Long?,
         @Query("api_key") apiKey: String?= BuildConfig.MOVIE_API_KEY,
         @Query("language") language : String?= Constants.MOVIE_API_LANGUAGE
-    ): CreditsList
+    ): Response<CreditsList>
 }

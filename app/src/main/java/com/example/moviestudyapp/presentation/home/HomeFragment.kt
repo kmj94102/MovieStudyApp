@@ -1,6 +1,8 @@
 package com.example.moviestudyapp.presentation.home
 
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -27,13 +29,17 @@ import kotlin.coroutines.CoroutineContext
 internal class HomeFragment : BaseFragment<HomeViewModel>(), CoroutineScope {
     private lateinit var binding : FragmentHomeBinding
 
+    private val pref : SharedPreferences by lazy {
+        requireActivity().getSharedPreferences(Constants.PREF_USER, Context.MODE_PRIVATE)
+    }
+
     private val job = SupervisorJob()
     override val coroutineContext: CoroutineContext
         get() = Dispatchers.Main + job
 
     override val viewModel: HomeViewModel by viewModel{
         parametersOf(
-            null
+            pref.getLong(Constants.PREF_KEY_MOVIE_ID, 0L)
         )
     }
 
@@ -59,6 +65,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel>(), CoroutineScope {
                     handleSuccessState(it)
                 }
                 is HomeState.Error -> {
+                    Log.e("++++++", "Error")
                     handleErrorState()
                 }
             }
