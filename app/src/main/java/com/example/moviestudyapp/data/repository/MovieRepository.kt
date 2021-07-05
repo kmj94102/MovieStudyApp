@@ -1,5 +1,6 @@
 package com.example.moviestudyapp.data.repository
 
+import com.example.moviestudyapp.data.entity.MyKeywordEntity
 import com.example.moviestudyapp.network.*
 
 interface MovieRepository {
@@ -13,5 +14,9 @@ interface MovieRepository {
     suspend fun getCredits(movieId : Long?) : CreditsList
 
     suspend fun getSearchMovies(query : String?) : MovieSearchResult
+
+    suspend fun insertKeyword(myKeywordEntity: MyKeywordEntity)
+
+    suspend fun selectKeywordLists() : List<String>
 
 }

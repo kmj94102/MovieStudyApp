@@ -6,6 +6,10 @@ sealed class SearchMovieState {
 
     object UnInitialized : SearchMovieState()
 
+    data class InitializedSuccess(
+        val keywordList : List<String>
+    ) : SearchMovieState()
+
     object Loading: SearchMovieState()
 
     data class Success(

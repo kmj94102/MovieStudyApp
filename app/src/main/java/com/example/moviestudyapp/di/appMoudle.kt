@@ -2,8 +2,11 @@ package com.example.moviestudyapp.di
 
 import com.example.moviestudyapp.BuildConfig
 import com.example.moviestudyapp.Constants
+import com.example.moviestudyapp.data.MovieDatabase
+import com.example.moviestudyapp.data.dao.MovieDao
 import com.example.moviestudyapp.data.repository.MovieRepository
 import com.example.moviestudyapp.data.repository.MovieRepositoryImpl
+import com.example.moviestudyapp.domain.*
 import com.example.moviestudyapp.domain.GetCreditsUseCase
 import com.example.moviestudyapp.domain.GetMovieDetailUseCase
 import com.example.moviestudyapp.domain.GetSearchMoviesUseCase
@@ -16,6 +19,7 @@ import com.example.moviestudyapp.presentation.search.SearchMovieViewModel
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
+import org.koin.android.ext.koin.androidApplication
 import org.koin.android.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
@@ -51,8 +55,12 @@ internal val appModule = module {
             .create()
     }
 
+    // Room Database
+    single { MovieDatabase.build(androidApplication()) }
+    single { get<MovieDatabase>().movieDao() }
+
     // Repository
-    single<MovieRepository> { MovieRepositoryImpl(get(), get()) }
+    single<MovieRepository> { MovieRepositoryImpl(get(), get(), get()) }
 
     // UseCase
     factory { GetTrendingMovieListUseCase(get()) }
@@ -60,10 +68,12 @@ internal val appModule = module {
     factory { GetMovieDetailUseCase(get()) }
     factory { GetCreditsUseCase(get()) }
     factory { GetSearchMoviesUseCase(get()) }
+    factory { InsertKeywordUseCase(get()) }
+    factory { SelectKeywordListsUseCase(get()) }
 
     // ViewModel
     viewModel { (movieId : Long?) -> HomeViewModel(movieId, get(), get()) }
     viewModel { (movieId : Long?) -> MovieDetailViewModel(movieId, get(), get()) }
-    viewModel { SearchMovieViewModel(get()) }
+    viewModel { SearchMovieViewModel(get(), get(), get()) }
 
 }

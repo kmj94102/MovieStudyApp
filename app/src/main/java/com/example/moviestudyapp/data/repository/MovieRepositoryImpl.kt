@@ -1,6 +1,8 @@
 package com.example.moviestudyapp.data.repository
 
 import android.util.Log
+import com.example.moviestudyapp.data.dao.MovieDao
+import com.example.moviestudyapp.data.entity.MyKeywordEntity
 import com.example.moviestudyapp.network.*
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -8,6 +10,7 @@ import java.lang.RuntimeException
 
 class MovieRepositoryImpl(
     private val movieApi: MovieApi,
+    private val movieDao: MovieDao,
     private val dispatcher: CoroutineDispatcher
 ) : MovieRepository{
     override suspend fun getTrendingMovieList(mediaType: String?, timeWindow: String?): TrendingListResult =
@@ -36,6 +39,14 @@ class MovieRepositoryImpl(
         movieApi.getSearchMovies(query = query)
             .body()
             ?: throw RuntimeException("getSearchMovies API 호출 오류")
+    }
+
+    override suspend fun insertKeyword(myKeywordEntity: MyKeywordEntity) = withContext(dispatcher) {
+        movieDao.insertKeyword(myKeywordEntity)
+    }
+
+    override suspend fun selectKeywordLists(): List<String> = withContext(dispatcher) {
+        movieDao.selectKeywordLists()
     }
 
 }

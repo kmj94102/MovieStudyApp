@@ -8,6 +8,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
 import com.example.moviestudyapp.Constants
+import com.example.moviestudyapp.data.entity.MyKeywordEntity
 import com.example.moviestudyapp.databinding.FragmentSearchBinding
 import com.example.moviestudyapp.presentation.BaseFragment
 import com.example.moviestudyapp.presentation.adapter.SearchMovieAdapter
@@ -39,6 +40,9 @@ internal class SearchFragment : BaseFragment<SearchMovieViewModel>(), CoroutineS
                 is SearchMovieState.UnInitialized -> {
                     initViews()
                 }
+                is SearchMovieState.InitializedSuccess -> {
+                    handleInitializedSuccessState(it)
+                }
                 is SearchMovieState.Loading -> {
                     handleLoadingState()
                 }
@@ -63,19 +67,8 @@ internal class SearchFragment : BaseFragment<SearchMovieViewModel>(), CoroutineS
             }
 
             viewModel.searchMove(query)
+            viewModel.insertKeyword(MyKeywordEntity(keyword = query))
         }
-
-        val chip = Chip(requireContext()).apply {
-            text = "chip 테스트"
-            isCloseIconVisible = true
-            setOnCloseIconClickListener {
-                chipGroup.removeView(this)
-            }
-            setOnClickListener {
-                Log.e("++++++", "$text")
-            }
-        }
-        chipGroup.addView(chip)
 
         adapter = SearchMovieAdapter(requireContext()){ movieId ->
             val intent = Intent(requireContext(), MovieDetailActivity::class.java)
@@ -84,6 +77,24 @@ internal class SearchFragment : BaseFragment<SearchMovieViewModel>(), CoroutineS
         }
 
         rvSearchMovie.adapter = adapter
+    }
+
+    private fun handleInitializedSuccessState(searchMovieState: SearchMovieState.InitializedSuccess) = with(binding){
+        progressBar.isVisible = false
+
+        searchMovieState.keywordList.forEach { keyword ->
+            val chip = Chip(requireContext()).apply {
+                text = keyword
+                isCloseIconVisible = true
+                setOnCloseIconClickListener {
+                    chipGroup.removeView(this)
+                }
+                setOnClickListener {
+                    Log.e("++++++", "$text")
+                }
+            }
+            chipGroup.addView(chip)
+        }
     }
 
     private fun handleLoadingState() = with(binding){
