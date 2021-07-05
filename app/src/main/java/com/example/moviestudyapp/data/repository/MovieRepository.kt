@@ -1,9 +1,6 @@
 package com.example.moviestudyapp.data.repository
 
-import com.example.moviestudyapp.network.CreditsList
-import com.example.moviestudyapp.network.MovieDetail
-import com.example.moviestudyapp.network.SimilarListResult
-import com.example.moviestudyapp.network.TrendingListResult
+import com.example.moviestudyapp.network.*
 
 interface MovieRepository {
 
@@ -14,5 +11,7 @@ interface MovieRepository {
     suspend fun getMovieDetail(movieId : Long?) : MovieDetail
 
     suspend fun getCredits(movieId : Long?) : CreditsList
+
+    suspend fun getSearchMovies(query : String?) : MovieSearchResult
 
 }

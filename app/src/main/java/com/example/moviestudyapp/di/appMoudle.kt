@@ -6,11 +6,13 @@ import com.example.moviestudyapp.data.repository.MovieRepository
 import com.example.moviestudyapp.data.repository.MovieRepositoryImpl
 import com.example.moviestudyapp.domain.GetCreditsUseCase
 import com.example.moviestudyapp.domain.GetMovieDetailUseCase
+import com.example.moviestudyapp.domain.GetSearchMoviesUseCase
 import com.example.moviestudyapp.domain.GetSimilarMovieListUseCase
 import com.example.moviestudyapp.domain.GetTrendingMovieListUseCase
 import com.example.moviestudyapp.network.MovieApi
 import com.example.moviestudyapp.presentation.home.HomeViewModel
 import com.example.moviestudyapp.presentation.movie_detail.MovieDetailViewModel
+import com.example.moviestudyapp.presentation.search.SearchMovieViewModel
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -57,9 +59,11 @@ internal val appModule = module {
     factory { GetSimilarMovieListUseCase(get()) }
     factory { GetMovieDetailUseCase(get()) }
     factory { GetCreditsUseCase(get()) }
+    factory { GetSearchMoviesUseCase(get()) }
 
     // ViewModel
     viewModel { (movieId : Long?) -> HomeViewModel(movieId, get(), get()) }
     viewModel { (movieId : Long?) -> MovieDetailViewModel(movieId, get(), get()) }
+    viewModel { SearchMovieViewModel(get()) }
 
 }

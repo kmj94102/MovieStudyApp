@@ -32,4 +32,10 @@ class MovieRepositoryImpl(
             ?: throw RuntimeException("getCredits API 호출 오류")
     }
 
+    override suspend fun getSearchMovies(query: String?): MovieSearchResult = withContext(dispatcher) {
+        movieApi.getSearchMovies(query = query)
+            .body()
+            ?: throw RuntimeException("getSearchMovies API 호출 오류")
+    }
+
 }
