@@ -19,4 +19,6 @@ interface MovieRepository {
 
     suspend fun selectKeywordLists() : List<String>
 
+    suspend fun deleteKeyword(keyword : String) : Int
+
 }

@@ -2,13 +2,13 @@ package com.example.moviestudyapp.presentation.search
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isEmpty
+import androidx.core.view.isGone
 import androidx.core.view.isVisible
 import com.example.moviestudyapp.Constants
-import com.example.moviestudyapp.data.entity.MyKeywordEntity
 import com.example.moviestudyapp.databinding.FragmentSearchBinding
 import com.example.moviestudyapp.presentation.BaseFragment
 import com.example.moviestudyapp.presentation.adapter.SearchMovieAdapter
@@ -40,14 +40,17 @@ internal class SearchFragment : BaseFragment<SearchMovieViewModel>(), CoroutineS
                 is SearchMovieState.UnInitialized -> {
                     initViews()
                 }
-                is SearchMovieState.InitializedSuccess -> {
-                    handleInitializedSuccessState(it)
+                is SearchMovieState.SelectKeywordSuccess -> {
+                    handleSelectKeywordSuccessState(it)
                 }
                 is SearchMovieState.Loading -> {
                     handleLoadingState()
                 }
                 is SearchMovieState.Success -> {
                     handleSuccessState(it)
+                }
+                is SearchMovieState.DeleteSuccess -> {
+                    handleDeleteSuccessState(it)
                 }
                 is SearchMovieState.Error -> {
                     handleErrorState()
@@ -67,7 +70,6 @@ internal class SearchFragment : BaseFragment<SearchMovieViewModel>(), CoroutineS
             }
 
             viewModel.searchMove(query)
-            viewModel.insertKeyword(MyKeywordEntity(keyword = query))
         }
 
         adapter = SearchMovieAdapter(requireContext()){ movieId ->
@@ -79,22 +81,15 @@ internal class SearchFragment : BaseFragment<SearchMovieViewModel>(), CoroutineS
         rvSearchMovie.adapter = adapter
     }
 
-    private fun handleInitializedSuccessState(searchMovieState: SearchMovieState.InitializedSuccess) = with(binding){
+    private fun handleSelectKeywordSuccessState(searchMovieState: SearchMovieState.SelectKeywordSuccess) = with(binding){
         progressBar.isVisible = false
+        chipGroup.removeAllViews()
 
         searchMovieState.keywordList.forEach { keyword ->
-            val chip = Chip(requireContext()).apply {
-                text = keyword
-                isCloseIconVisible = true
-                setOnCloseIconClickListener {
-                    chipGroup.removeView(this)
-                }
-                setOnClickListener {
-                    Log.e("++++++", "$text")
-                }
-            }
-            chipGroup.addView(chip)
+            chipGroup.addView(createChipView(keyword))
         }
+
+        settingKeywordViewsVisible()
     }
 
     private fun handleLoadingState() = with(binding){
@@ -107,6 +102,18 @@ internal class SearchFragment : BaseFragment<SearchMovieViewModel>(), CoroutineS
         }
         settingSuccessVisibleViews()
         adapter.submitList(searchMovieState.movieSearchResult.results)
+        if(searchMovieState.movieSearchResult.results.isEmpty()){
+            txtError.isVisible = true
+        }
+
+        viewModel.fetchData()
+    }
+
+    private fun handleDeleteSuccessState(searchMovieState: SearchMovieState.DeleteSuccess) = with(binding){
+        if (searchMovieState.count > 0){
+            chipGroup.removeView(searchMovieState.cipView)
+            settingKeywordViewsVisible()
+        }
     }
 
     private fun handleErrorState() = with(binding){
@@ -142,5 +149,23 @@ internal class SearchFragment : BaseFragment<SearchMovieViewModel>(), CoroutineS
         txtError.isVisible = true
         btnError.isVisible = true
     }
+
+    private fun settingKeywordViewsVisible() = with(binding){
+        chipGroup.isGone = chipGroup.childCount == 0
+        txtRecentSearches.isGone = chipGroup.isEmpty()
+    }
+
+    private fun createChipView(keyword : String) =
+        Chip(requireContext()).apply {
+            text = keyword
+            isCloseIconVisible = true
+            setOnCloseIconClickListener {
+                viewModel.deleteKeyword("$text", this)
+            }
+            setOnClickListener {
+                binding.editSearch.setText("$text")
+                binding.btnSearch.performClick()
+            }
+        }
 
 }

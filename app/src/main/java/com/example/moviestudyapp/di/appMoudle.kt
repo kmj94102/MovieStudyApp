@@ -70,10 +70,11 @@ internal val appModule = module {
     factory { GetSearchMoviesUseCase(get()) }
     factory { InsertKeywordUseCase(get()) }
     factory { SelectKeywordListsUseCase(get()) }
+    factory { DeleteKeywordUseCase(get()) }
 
     // ViewModel
     viewModel { (movieId : Long?) -> HomeViewModel(movieId, get(), get()) }
     viewModel { (movieId : Long?) -> MovieDetailViewModel(movieId, get(), get()) }
-    viewModel { SearchMovieViewModel(get(), get(), get()) }
+    viewModel { SearchMovieViewModel(get(), get(), get(), get()) }
 
 }

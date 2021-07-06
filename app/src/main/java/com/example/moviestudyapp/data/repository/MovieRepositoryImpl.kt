@@ -49,4 +49,8 @@ class MovieRepositoryImpl(
         movieDao.selectKeywordLists()
     }
 
+    override suspend fun deleteKeyword(keyword: String): Int = withContext(dispatcher) {
+        movieDao.deleteKeyword(keyword)
+    }
+
 }
