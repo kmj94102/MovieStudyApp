@@ -3,6 +3,8 @@ package com.example.moviestudyapp.presentation.movie_detail
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.example.moviestudyapp.data.entity.MyMovie
+import com.example.moviestudyapp.domain.*
 import com.example.moviestudyapp.domain.GetCreditsUseCase
 import com.example.moviestudyapp.domain.GetMovieDetailUseCase
 import com.example.moviestudyapp.presentation.BaseViewModel
@@ -13,7 +15,10 @@ import java.lang.Exception
 internal class MovieDetailViewModel(
     var movieId : Long?,
     private val getMovieDetailUseCase: GetMovieDetailUseCase,
-    private val getCreditsUseCase: GetCreditsUseCase
+    private val getCreditsUseCase: GetCreditsUseCase,
+    private val insertMyMovieUseCase : InsertMyMovieUseCase,
+    private val updateMyMovieUseCase : UpdateMyMovieUseCase,
+    private val selectMyMovieUseCase : SelectMyMovieUseCase
 ) : BaseViewModel() {
 
     private var _movieDetailLiveData = MutableLiveData<MovieDetailState>(MovieDetailState.UnInitialized)
@@ -24,10 +29,19 @@ internal class MovieDetailViewModel(
         try {
             val movieDetail = getMovieDetailUseCase(movieId)
             val creditsList = getCreditsUseCase(movieId)
-            _movieDetailLiveData.postValue(MovieDetailState.Success(movieDetail, creditsList))
+            val myMovie = selectMyMovieUseCase(movieId)
+            _movieDetailLiveData.postValue(MovieDetailState.Success(movieId, movieDetail, creditsList, myMovie))
         }catch (e: Exception){
             e.printStackTrace()
             _movieDetailLiveData.postValue(MovieDetailState.Error)
         }
+    }
+
+    fun insertMyMovie(myMovie : MyMovie) = viewModelScope.launch{
+        insertMyMovieUseCase(myMovie)
+    }
+
+    fun updateMyMovie(isBookMark: Boolean, isLike: Boolean, movieId : Long?) = viewModelScope.launch {
+        updateMyMovieUseCase(isBookMark, isLike, movieId)
     }
 }

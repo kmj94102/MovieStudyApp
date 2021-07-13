@@ -15,6 +15,7 @@ import com.example.moviestudyapp.domain.GetTrendingMovieListUseCase
 import com.example.moviestudyapp.network.MovieApi
 import com.example.moviestudyapp.presentation.home.HomeViewModel
 import com.example.moviestudyapp.presentation.movie_detail.MovieDetailViewModel
+import com.example.moviestudyapp.presentation.mypage.MyPageViewModel
 import com.example.moviestudyapp.presentation.search.SearchMovieViewModel
 import kotlinx.coroutines.Dispatchers
 import okhttp3.OkHttpClient
@@ -31,7 +32,9 @@ internal val appModule = module {
     single { Dispatchers.Main }
     single { Dispatchers.IO }
 
-    // Api
+    /**
+     * Retrofit
+     * */
     single {
         OkHttpClient()
             .newBuilder()
@@ -55,26 +58,44 @@ internal val appModule = module {
             .create()
     }
 
-    // Room Database
+    /**
+     * Room Database
+     * */
     single { MovieDatabase.build(androidApplication()) }
     single { get<MovieDatabase>().movieDao() }
 
-    // Repository
+    /**
+     * Repository
+     * */
     single<MovieRepository> { MovieRepositoryImpl(get(), get(), get()) }
 
-    // UseCase
+    /**
+     * UseCase
+     * */
+    // Movie API 관련
     factory { GetTrendingMovieListUseCase(get()) }
     factory { GetSimilarMovieListUseCase(get()) }
     factory { GetMovieDetailUseCase(get()) }
     factory { GetCreditsUseCase(get()) }
     factory { GetSearchMoviesUseCase(get()) }
+    // 키워드 관련
     factory { InsertKeywordUseCase(get()) }
     factory { SelectKeywordListsUseCase(get()) }
     factory { DeleteKeywordUseCase(get()) }
+    // 마이페이지 관련
+    factory { InsertMyMovieUseCase(get()) }
+    factory { UpdateMyMovieUseCase(get()) }
+    factory { SelectMyMovieUseCase(get()) }
+    factory { SelectBookMarkListUseCase(get()) }
+    factory { SelectLikeListUseCase(get()) }
 
-    // ViewModel
+
+    /**
+     * ViewModel
+     * */
     viewModel { (movieId : Long?) -> HomeViewModel(movieId, get(), get()) }
-    viewModel { (movieId : Long?) -> MovieDetailViewModel(movieId, get(), get()) }
+    viewModel { (movieId : Long?) -> MovieDetailViewModel(movieId, get(), get(), get(), get(), get()) }
     viewModel { SearchMovieViewModel(get(), get(), get(), get()) }
+    viewModel { MyPageViewModel(get(), get()) }
 
 }

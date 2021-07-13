@@ -4,11 +4,14 @@ import android.content.Context
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import com.example.moviestudyapp.data.dao.MovieDao
 import com.example.moviestudyapp.data.entity.MyKeywordEntity
+import com.example.moviestudyapp.data.entity.MyMovie
 
 @Database(
-    entities = [MyKeywordEntity::class],
+    entities = [MyKeywordEntity::class, MyMovie::class],
     version = 1
 )
 abstract class MovieDatabase : RoomDatabase() {

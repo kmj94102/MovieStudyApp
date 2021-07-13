@@ -13,4 +13,7 @@
     <string name="refresh">새로고침</string>
     <string name="try_again">다시 검색하기</string>
     <string name="recent_searches">최근 검색어</string>
+    <string name="bookmark">북마크</string>
+    <string name="like_movie">좋아요</string>
+    <string name="my_average">내 별점</string>
 </resources>

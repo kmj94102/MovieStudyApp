@@ -3,6 +3,7 @@ package com.example.moviestudyapp.data.repository
 import android.util.Log
 import com.example.moviestudyapp.data.dao.MovieDao
 import com.example.moviestudyapp.data.entity.MyKeywordEntity
+import com.example.moviestudyapp.data.entity.MyMovie
 import com.example.moviestudyapp.network.*
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.withContext
@@ -13,6 +14,10 @@ class MovieRepositoryImpl(
     private val movieDao: MovieDao,
     private val dispatcher: CoroutineDispatcher
 ) : MovieRepository{
+
+    /**
+     * Movie Api 관련
+     * */
     override suspend fun getTrendingMovieList(mediaType: String?, timeWindow: String?): TrendingListResult =
         movieApi.getTrendingMovieList(mediaType = mediaType, timeWindow = timeWindow)
             .body()
@@ -41,6 +46,9 @@ class MovieRepositoryImpl(
             ?: throw RuntimeException("getSearchMovies API 호출 오류")
     }
 
+    /**
+     * 키워드 관련
+     * */
     override suspend fun insertKeyword(myKeywordEntity: MyKeywordEntity) = withContext(dispatcher) {
         movieDao.insertKeyword(myKeywordEntity)
     }
@@ -51,6 +59,29 @@ class MovieRepositoryImpl(
 
     override suspend fun deleteKeyword(keyword: String): Int = withContext(dispatcher) {
         movieDao.deleteKeyword(keyword)
+    }
+
+    /**
+     * 마이페이지 관련
+     * */
+    override suspend fun insertMyMovie(myMovie: MyMovie) = withContext(dispatcher) {
+        movieDao.insertMyMovie(myMovie)
+    }
+
+    override suspend fun updateMyMove(isBookMark: Boolean, isLike: Boolean, movieId : Long?) = withContext(dispatcher) {
+        movieDao.updateMyMove(isBookMark, isLike, movieId)
+    }
+
+    override suspend fun selectMyMovie(movieId: Long?): MyMovie? = withContext(dispatcher) {
+        movieDao.selectMyMovie(movieId)
+    }
+
+    override suspend fun selectBookMarkList(isBookMark: Boolean): List<MyMovie> = withContext(dispatcher) {
+        movieDao.selectBookMarkList()
+    }
+
+    override suspend fun selectLikeList(isLike: Boolean): List<MyMovie> = withContext(dispatcher) {
+        movieDao.selectLikeList()
     }
 
 }

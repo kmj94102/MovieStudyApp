@@ -54,24 +54,31 @@ internal class HomeFragment : BaseFragment<HomeViewModel>(), CoroutineScope {
             when(it){
                 is HomeState.UnInitialized -> {
                     Log.e("++++++", "UnInitialized")
+                    // 각종 뷰들 초기화
                     initViews()
                 }
                 is HomeState.Loading -> {
                     Log.e("++++++", "Loading")
+                    // 로딩 상태 설정
                     handleLoadingState()
                 }
                 is HomeState.Success -> {
                     Log.e("++++++", "Success")
+                    // 완료 상태 설정
                     handleSuccessState(it)
                 }
                 is HomeState.Error -> {
                     Log.e("++++++", "Error")
+                    // 에러 상태 설정
                     handleErrorState()
                 }
             }
         }
     }
 
+    /**
+     * 각종 뷰들 초기화
+     * */
     private fun initViews() = with(binding){
         // 트래드 뷰페이저 설정
         trendingAdapter = TrendingAdapter(requireActivity(), listOf()){ movieId ->
@@ -86,15 +93,18 @@ internal class HomeFragment : BaseFragment<HomeViewModel>(), CoroutineScope {
             setPageTransformer(SliderTransformer(3))
         }
 
+        // 트렌드 뷰페이저 페이지 변경 시 셋팅
         vpTrending.registerOnPageChangeCallback(object : ViewPager2.OnPageChangeCallback(){
             override fun onPageSelected(position: Int) {
                 super.onPageSelected(position)
+
                 Handler(Looper.getMainLooper()).postDelayed({
                     val trendingItem = trendingAdapter.currentItem(position)
                     ratingBar.rating = (trendingItem.vote_average ?: 0.0f) / 2f
                     txtRating.text = "${trendingItem.vote_average ?: 0.0f}"
                     txtMovieTitle.text = "${trendingItem.title}"
                 }, 100)
+
             }
         })
 
@@ -108,12 +118,21 @@ internal class HomeFragment : BaseFragment<HomeViewModel>(), CoroutineScope {
         rvRecommendMovie.adapter = similarAdapter
     }
 
+    /**
+     * 로딩 상태 설정
+     * */
     private fun handleLoadingState() = with(binding){
         progressBar.isVisible = true
     }
 
+    /**
+     * 완료 상태 설정
+     * 1. adapter 들 initialized 상태 확인 -> 안 되었을 경우 initViews 로 선 실행
+     * 2. 프로그레스 제거 및 뷰 활성화 설정
+     * 3. 각 adapter 조회한 결과 값 추가
+     * */
     private fun handleSuccessState(homeState: HomeState.Success) = with(binding){
-        if(::trendingAdapter.isInitialized.not()){
+        if(::trendingAdapter.isInitialized.not() || ::similarAdapter.isInitialized.not()){
             initViews()
         }
 
@@ -126,11 +145,17 @@ internal class HomeFragment : BaseFragment<HomeViewModel>(), CoroutineScope {
 
     }
 
+    /**
+     * 에러 상태 설정
+     * */
     private fun handleErrorState() = with(binding){
         progressBar.isVisible = false
         errorViewVisible()
     }
 
+    /**
+     * 완료 상태 시 보여줄 뷰 활성화 설정
+     * */
     private fun successViewVisible() = with(binding){
         txtTrending.isVisible = true
         vpTrending.isVisible = true
@@ -143,6 +168,9 @@ internal class HomeFragment : BaseFragment<HomeViewModel>(), CoroutineScope {
         btnError.isVisible = false
     }
 
+    /**
+     * 에러 상태 시 보여줄 뷰 활성화 설정
+     * */
     private fun errorViewVisible() = with(binding){
         txtTrending.isVisible = false
         vpTrending.isVisible = false
@@ -155,6 +183,9 @@ internal class HomeFragment : BaseFragment<HomeViewModel>(), CoroutineScope {
         btnError.isVisible = true
     }
 
+    /**
+     * 종료되었을 때 job, coroutineContext 취소
+     * */
     override fun onDestroy() {
         super.onDestroy()
         job.cancel()
