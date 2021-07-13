@@ -15,6 +15,7 @@ import com.example.moviestudyapp.network.MovieDetail
 import com.example.moviestudyapp.presentation.BaseActivity
 import com.example.moviestudyapp.presentation.adapter.CastInfoAdapter
 import com.example.moviestudyapp.presentation.adapter.GenreAdapter
+import com.example.moviestudyapp.presentation.dialog.LikeMovieDialog
 import kotlinx.coroutines.*
 import kotlinx.coroutines.flow.*
 import org.jetbrains.anko.backgroundColorResource
@@ -86,34 +87,42 @@ internal class MovieDetailActivity : BaseActivity<MovieDetailViewModel>(), Corou
                 myMovie.isBookMark = it.tag.toString() == "true"
                 viewModel.updateMyMovie(myMovie.isBookMark, myMovie.isLike, movieId)
             } ?: run {
-                myMovie = createMyMovie()
+                myMovie = createMyMovie(0.0f, "")
                 viewModel.insertMyMovie(myMovie!!)
             }
         }
 
-        viewHeart.setOnClickListener {
-            Log.e("++++", "tag : ${it.tag}")
-            it.tag = if(it.tag.toString() == "true") "false" else "true"
-            Log.e("++++", "tag2 : ${it.tag}")
+        viewHeart.setOnClickListener { view ->
+            view.tag = if(view.tag.toString() == "true") "false" else "true"
             setViewHeartBackground()
 
-            myMovie?.let { myMovie ->
-                myMovie.isLike = it.tag.toString() == "true"
-                viewModel.updateMyMovie(myMovie.isBookMark, myMovie.isLike, movieId)
-            } ?: run {
-                myMovie = createMyMovie()
-                viewModel.insertMyMovie(myMovie!!)
+            myMovie?.isLike = view.tag.toString() == "true"
+
+            if(view.tag.toString() == "true"){
+                LikeMovieDialog(this@MovieDetailActivity){ myVoteAverage, memo ->
+                    myMovie?.let { myMovie ->
+                        myMovie.isLike = view.tag.toString() == "true"
+                        viewModel.updateMyMovie(myMovie.isBookMark, myMovie.isLike, movieId)
+                    } ?: run {
+                        myMovie = createMyMovie(myVoteAverage, memo)
+                        viewModel.insertMyMovie(myMovie!!)
+                    }
+                }.show()
+            }else{
+                myMovie?.let { myMovie ->
+                    viewModel.updateMyMovie(myMovie.isBookMark, myMovie.isLike, movieId)
+                }
             }
         }
     }
 
-    private fun createMyMovie() : MyMovie =
+    private fun createMyMovie(myVoteAverage : Float, memo : String) : MyMovie =
         MyMovie(
             movieId = movieId,
             isLike = binding.viewHeart.tag.toString().toBoolean(),
             isBookMark = binding.viewBookMark.tag.toString().toBoolean(),
-            myVoteAverage = 0.0f,
-            memo = "",
+            myVoteAverage = myVoteAverage,
+            memo = memo,
             title = movieDetail?.title,
             backdropPath = movieDetail?.backdrop_path,
             posterPath = movieDetail?.poster_path,

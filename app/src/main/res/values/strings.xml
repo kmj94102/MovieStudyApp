@@ -16,4 +16,7 @@
     <string name="bookmark">북마크</string>
     <string name="like_movie">좋아요</string>
     <string name="my_average">내 별점</string>
+    <string name="memo_guide">간단한 메모를 입력해주세요</string>
+    <string name="ok">확인</string>
+    <string name="like_register">좋아요 등록</string>
 </resources>
