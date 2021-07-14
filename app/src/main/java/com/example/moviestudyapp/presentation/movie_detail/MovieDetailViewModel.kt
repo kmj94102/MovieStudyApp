@@ -41,7 +41,7 @@ internal class MovieDetailViewModel(
         insertMyMovieUseCase(myMovie)
     }
 
-    fun updateMyMovie(isBookMark: Boolean, isLike: Boolean, movieId : Long?) = viewModelScope.launch {
-        updateMyMovieUseCase(isBookMark, isLike, movieId)
+    fun updateMyMovie(isBookMark: Boolean, isLike: Boolean, myVoteAverage : Float, memo : String, movieId : Long?) = viewModelScope.launch {
+        updateMyMovieUseCase(isBookMark, isLike, myVoteAverage, memo, movieId)
     }
 }

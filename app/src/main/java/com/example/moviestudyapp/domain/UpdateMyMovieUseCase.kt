@@ -7,7 +7,7 @@ class UpdateMyMovieUseCase(
     private val movieRepository: MovieRepository
 ) : UseCase {
 
-    suspend operator fun invoke(isBookMark: Boolean, isLike: Boolean, movieId : Long?) =
-        movieRepository.updateMyMove(isBookMark, isLike, movieId)
+    suspend operator fun invoke(isBookMark: Boolean, isLike: Boolean, myVoteAverage : Float, memo : String, movieId : Long?) =
+        movieRepository.updateMyMove(isBookMark, isLike, myVoteAverage, memo, movieId)
 
 }

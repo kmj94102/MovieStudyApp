@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.util.Log
+import android.view.WindowManager
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.example.moviestudyapp.Constants
@@ -23,6 +23,7 @@ import org.jetbrains.anko.backgroundResource
 import org.koin.android.viewmodel.ext.android.viewModel
 import org.koin.core.parameter.parametersOf
 import kotlin.coroutines.CoroutineContext
+
 
 internal class MovieDetailActivity : BaseActivity<MovieDetailViewModel>(), CoroutineScope {
 
@@ -85,7 +86,7 @@ internal class MovieDetailActivity : BaseActivity<MovieDetailViewModel>(), Corou
 
             myMovie?.let { myMovie ->
                 myMovie.isBookMark = it.tag.toString() == "true"
-                viewModel.updateMyMovie(myMovie.isBookMark, myMovie.isLike, movieId)
+                viewModel.updateMyMovie(myMovie.isBookMark, myMovie.isLike, myMovie.myVoteAverage?: 0.0f, myMovie.memo ?: "", movieId)
             } ?: run {
                 myMovie = createMyMovie(0.0f, "")
                 viewModel.insertMyMovie(myMovie!!)
@@ -94,7 +95,6 @@ internal class MovieDetailActivity : BaseActivity<MovieDetailViewModel>(), Corou
 
         viewHeart.setOnClickListener { view ->
             view.tag = if(view.tag.toString() == "true") "false" else "true"
-            setViewHeartBackground()
 
             myMovie?.isLike = view.tag.toString() == "true"
 
@@ -102,16 +102,20 @@ internal class MovieDetailActivity : BaseActivity<MovieDetailViewModel>(), Corou
                 LikeMovieDialog(this@MovieDetailActivity){ myVoteAverage, memo ->
                     myMovie?.let { myMovie ->
                         myMovie.isLike = view.tag.toString() == "true"
-                        viewModel.updateMyMovie(myMovie.isBookMark, myMovie.isLike, movieId)
+                        myMovie.myVoteAverage = myVoteAverage
+                        myMovie.memo = memo
+                        viewModel.updateMyMovie(myMovie.isBookMark, myMovie.isLike, myVoteAverage, memo, movieId)
                     } ?: run {
                         myMovie = createMyMovie(myVoteAverage, memo)
                         viewModel.insertMyMovie(myMovie!!)
                     }
+                    setViewHeartBackground()
                 }.show()
             }else{
                 myMovie?.let { myMovie ->
-                    viewModel.updateMyMovie(myMovie.isBookMark, myMovie.isLike, movieId)
+                    viewModel.updateMyMovie(myMovie.isBookMark, myMovie.isLike, myMovie.myVoteAverage?: 0.0f, myMovie.memo ?: "", movieId)
                 }
+                setViewHeartBackground()
             }
         }
     }

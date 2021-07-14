@@ -75,23 +75,24 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginStart="20dp"
-            android:textColor="@color/teal_200"
+            android:textColor="@color/yellow_color"
             app:layout_constraintTop_toBottomOf="@id/txtMovieTitle"
             app:layout_constraintStart_toStartOf="parent"
             tools:text="7.5"/>
 
-        <RatingBar
+        <com.willy.ratingbar.BaseRatingBar
             android:id="@+id/ratingBar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginStart="10dp"
-            android:stepSize="0.01"
-            android:isIndicator="false"
-            style="@style/Widget.AppCompat.RatingBar.Small"
+            app:srb_stepSize="0.01"
+            app:srb_isIndicator="true"
+            app:srb_starWidth="15dp"
+            app:srb_starHeight="15dp"
+            app:srb_starPadding="2dp"
             app:layout_constraintStart_toEndOf="@id/txtRating"
             app:layout_constraintTop_toTopOf="@id/txtRating"
-            app:layout_constraintBottom_toBottomOf="@id/txtRating"
-            tools:rating="3"/>
+            app:layout_constraintBottom_toBottomOf="@id/txtRating"/>
 
         <TextView
             android:id="@+id/txtRecommendMovie"

@@ -26,8 +26,8 @@ interface MovieDao {
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun insertMyMovie(myMovie: MyMovie)
 
-    @Query("UPDATE MyMovie SET isBookMark = :isBookMark, isLike = :isLike WHERE movieId = :movieId")
-    suspend fun updateMyMove(isBookMark: Boolean, isLike: Boolean, movieId : Long?)
+    @Query("UPDATE MyMovie SET isBookMark = :isBookMark, isLike = :isLike, myVoteAverage = :myVoteAverage, memo = :memo WHERE movieId = :movieId")
+    suspend fun updateMyMove(isBookMark: Boolean, isLike: Boolean, myVoteAverage : Float, memo : String, movieId : Long?)
 
     @Query("SELECT * FROM MyMovie WHERE movieId=:movieId")
     suspend fun selectMyMovie(movieId : Long?) : MyMovie?

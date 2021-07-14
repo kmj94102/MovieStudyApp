@@ -24,7 +24,7 @@ interface MovieRepository {
 
     suspend fun insertMyMovie(myMovie: MyMovie)
 
-    suspend fun updateMyMove(isBookMark: Boolean, isLike: Boolean, movieId : Long?)
+    suspend fun updateMyMove(isBookMark: Boolean, isLike: Boolean, myVoteAverage : Float, memo : String, movieId : Long?)
 
     suspend fun selectMyMovie(movieId : Long?) : MyMovie?
 

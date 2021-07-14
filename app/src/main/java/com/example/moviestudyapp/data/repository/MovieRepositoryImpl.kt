@@ -68,8 +68,8 @@ class MovieRepositoryImpl(
         movieDao.insertMyMovie(myMovie)
     }
 
-    override suspend fun updateMyMove(isBookMark: Boolean, isLike: Boolean, movieId : Long?) = withContext(dispatcher) {
-        movieDao.updateMyMove(isBookMark, isLike, movieId)
+    override suspend fun updateMyMove(isBookMark: Boolean, isLike: Boolean, myVoteAverage : Float, memo : String, movieId : Long?) = withContext(dispatcher) {
+        movieDao.updateMyMove(isBookMark, isLike, myVoteAverage, memo, movieId)
     }
 
     override suspend fun selectMyMovie(movieId: Long?): MyMovie? = withContext(dispatcher) {

@@ -7,8 +7,11 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ListAdapter
 import com.example.moviestudyapp.Constants
+import com.example.moviestudyapp.GridSpacingItemDecoration
+import com.example.moviestudyapp.R
 import com.example.moviestudyapp.databinding.FragmentMyPageBinding
 import com.example.moviestudyapp.presentation.BaseFragment
+import com.example.moviestudyapp.presentation.adapter.BookmarkAdapter
 import com.example.moviestudyapp.presentation.adapter.LikeMovieAdapter
 import com.example.moviestudyapp.presentation.movie_detail.MovieDetailActivity
 import kotlinx.coroutines.CoroutineScope
@@ -22,6 +25,7 @@ internal class MyPageFragment : BaseFragment<MyPageViewModel>(), CoroutineScope 
 
     private lateinit var binding : FragmentMyPageBinding
     private lateinit var likeMovieAdapter : LikeMovieAdapter
+    private lateinit var bookmarkAdapter: BookmarkAdapter
 
     private val job = SupervisorJob()
     override val coroutineContext: CoroutineContext
@@ -56,6 +60,17 @@ internal class MyPageFragment : BaseFragment<MyPageViewModel>(), CoroutineScope 
             requireActivity().startActivity<MovieDetailActivity>(Constants.INTENT_MOVIE_ID to it)
         }
         rvLikeMovie.adapter = likeMovieAdapter
+
+        bookmarkAdapter = BookmarkAdapter {
+            requireActivity().startActivity<MovieDetailActivity>(Constants.INTENT_MOVIE_ID to it)
+        }
+        val spacing = resources.getDimensionPixelSize(R.dimen.spacing_10dp)
+        rvBookmark.apply {
+            adapter = bookmarkAdapter
+            addItemDecoration(GridSpacingItemDecoration(spacing))
+        }
+
+
     }
 
     private fun handleLoadingState() = with(binding){
@@ -68,6 +83,7 @@ internal class MyPageFragment : BaseFragment<MyPageViewModel>(), CoroutineScope 
         }
 
         likeMovieAdapter.submitList(myPageState.likeList)
+        bookmarkAdapter.submitList(myPageState.bookMarkList)
 
     }
 
