@@ -60,4 +60,14 @@ interface MovieApi {
         @Query("page") page : Int? = 1,
         @Query("query") query : String?
     ) : Response<MovieSearchResult>
+
+    // 인물 조회
+    @GET("search/person")
+    suspend fun getSearchPerson(
+        @Query("api_key") apiKey: String?= BuildConfig.MOVIE_API_KEY,
+        @Query("language") language: String?= Constants.MOVIE_API_LANGUAGE,
+        @Query("page") page : Int?= 1,
+        @Query("include_adult") include_adult : Boolean = true,
+        @Query("query") name : String?
+    ) : Response<PersonSearchResult>
 }

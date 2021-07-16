@@ -1,6 +1,5 @@
 package com.example.moviestudyapp.data.repository
 
-import android.util.Log
 import com.example.moviestudyapp.data.dao.MovieDao
 import com.example.moviestudyapp.data.entity.MyKeywordEntity
 import com.example.moviestudyapp.data.entity.MyMovie
@@ -45,6 +44,13 @@ class MovieRepositoryImpl(
             .body()
             ?: throw RuntimeException("getSearchMovies API 호출 오류")
     }
+
+    override suspend fun getSearchPerson(name: String?): PersonSearchResult = withContext(dispatcher){
+        movieApi.getSearchPerson(name = name)
+            .body()
+            ?: throw RuntimeException("getSearchPerson API 호출 오류")
+    }
+
 
     /**
      * 키워드 관련

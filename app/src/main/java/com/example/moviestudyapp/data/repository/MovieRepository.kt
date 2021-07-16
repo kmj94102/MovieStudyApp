@@ -16,6 +16,8 @@ interface MovieRepository {
 
     suspend fun getSearchMovies(query : String?) : MovieSearchResult
 
+    suspend fun getSearchPerson(name : String?) : PersonSearchResult
+
     suspend fun insertKeyword(myKeywordEntity: MyKeywordEntity)
 
     suspend fun selectKeywordLists() : List<String>

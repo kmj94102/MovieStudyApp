@@ -4,7 +4,7 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.content.SharedPreferences
 import android.os.Bundle
-import android.view.WindowManager
+import android.util.Log
 import androidx.core.view.isVisible
 import com.bumptech.glide.Glide
 import com.example.moviestudyapp.Constants
@@ -71,6 +71,12 @@ internal class MovieDetailActivity : BaseActivity<MovieDetailViewModel>(), Corou
                 }
                 is MovieDetailState.Error -> {
                     handleErrorState()
+                }
+                is MovieDetailState.PersonSearchSuccess -> {
+                    handlePersonSearchSuccess(it)
+                }
+                is MovieDetailState.PersonSearchError -> {
+                    handlePersonSearchError()
                 }
             }
         }
@@ -161,7 +167,10 @@ internal class MovieDetailActivity : BaseActivity<MovieDetailViewModel>(), Corou
             .into(imgBackgtround)
 
         rvGenre.adapter = GenreAdapter(movieDetailState.movieDetail.genres.mapNotNull { genre -> genre.name })
-        rvCast.adapter = CastInfoAdapter(this@MovieDetailActivity, movieDetailState.creditsList.cast)
+        rvCast.adapter = CastInfoAdapter{ name, id ->
+            viewModel.getSearchPersonInfo(name, id)
+        }
+        (rvCast.adapter as? CastInfoAdapter)?.submitList(movieDetailState.creditsList.cast)
 
         viewBookMark.tag = if(movieDetailState.myMovie?.isBookMark == true) "true" else "false"
         viewHeart.tag = if(movieDetailState.myMovie?.isLike == true) "true" else "false"
@@ -203,6 +212,15 @@ internal class MovieDetailActivity : BaseActivity<MovieDetailViewModel>(), Corou
         scrollView.isVisible = false
         txtError.isVisible = true
         btnError.isVisible = true
+    }
+
+    private fun handlePersonSearchSuccess(movieDetailState: MovieDetailState.PersonSearchSuccess) {
+        val personInfo = movieDetailState.personInfo
+        Log.e("+++++", "info : ${personInfo.name} / ${personInfo.known_for[0].title}")
+    }
+
+    private fun handlePersonSearchError(){
+
     }
 
 }

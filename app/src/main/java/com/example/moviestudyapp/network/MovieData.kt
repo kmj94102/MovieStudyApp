@@ -121,3 +121,38 @@ data class MovieSearchList(
     val vote_average : Float?,
     val vote_count : Long?
 )
+
+data class PersonSearchResult(
+    val page : Int?,
+    val results : List<PersonSearchList>,
+    val total_pages : Int,
+    val total_results : Int
+)
+
+data class PersonSearchList(
+    val id : Long?,
+    val name : String?,
+    val gender : Int?,
+    val adult : Boolean?,
+    val known_for : List<MovieStarringList>,
+    val known_for_department : String?,
+    val popularity : Float?,
+    val profile_path : String?
+)
+
+data class MovieStarringList(
+    val adult : Boolean?,
+    val backdrop_path : String?,
+    val genre_ids : List<Int>,
+    val id: Long?,
+    val media_type : String?,
+    val original_language : String?,
+    val original_title : String?,
+    val overview : String?,
+    val poster_path : String?,
+    val release_date : String?,
+    val title : String?,
+    val video : Boolean?,
+    val vote_average : Float?,
+    val vote_count : Long?
+)

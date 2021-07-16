@@ -209,4 +209,39 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:visibility="visible"/>
 
+    <com.skydoves.transformationlayout.TransformationLayout
+        android:id="@+id/transformationLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:transformation_duration="550"
+        app:transformation_targetView="@+id/myCardView"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent">
+
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/fab"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:backgroundTint="@color/teal_200"
+            android:src="@drawable/ic_bookmark_24"/>
+    </com.skydoves.transformationlayout.TransformationLayout>
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/myCardView"
+        android:layout_width="240dp"
+        android:layout_height="312dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginTop="30dp"
+        app:cardBackgroundColor="@color/main_color"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageView
+            android:id="@+id/imageView"
+            android:layout_width="220dp"
+            android:layout_height="250dp"
+            android:layout_gravity="center"/>
+
+    </com.google.android.material.card.MaterialCardView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>

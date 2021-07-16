@@ -16,9 +16,10 @@ internal class MovieDetailViewModel(
     var movieId : Long?,
     private val getMovieDetailUseCase: GetMovieDetailUseCase,
     private val getCreditsUseCase: GetCreditsUseCase,
+    private val getSearchPersonUseCase: GetSearchPersonUseCase,
     private val insertMyMovieUseCase : InsertMyMovieUseCase,
     private val updateMyMovieUseCase : UpdateMyMovieUseCase,
-    private val selectMyMovieUseCase : SelectMyMovieUseCase
+    private val selectMyMovieUseCase : SelectMyMovieUseCase,
 ) : BaseViewModel() {
 
     private var _movieDetailLiveData = MutableLiveData<MovieDetailState>(MovieDetailState.UnInitialized)
@@ -35,6 +36,13 @@ internal class MovieDetailViewModel(
             e.printStackTrace()
             _movieDetailLiveData.postValue(MovieDetailState.Error)
         }
+    }
+
+    fun getSearchPersonInfo(name: String?, id : Long?) = viewModelScope.launch {
+        val personInfo = getSearchPersonUseCase(name).results.find { it.id == id }
+        personInfo?.let {
+            _movieDetailLiveData.postValue(MovieDetailState.PersonSearchSuccess(it))
+        } ?:_movieDetailLiveData.postValue(MovieDetailState.PersonSearchError)
     }
 
     fun insertMyMovie(myMovie : MyMovie) = viewModelScope.launch{
