@@ -28,6 +28,8 @@ import kotlin.coroutines.CoroutineContext
 
 internal class HomeFragment : BaseFragment<HomeViewModel>(), CoroutineScope {
     private lateinit var binding : FragmentHomeBinding
+    private lateinit var trendingAdapter : TrendingAdapter
+    private lateinit var similarAdapter: SimilarAdapter
 
     private val pref : SharedPreferences by lazy {
         requireActivity().getSharedPreferences(Constants.PREF_USER, Context.MODE_PRIVATE)
@@ -42,9 +44,6 @@ internal class HomeFragment : BaseFragment<HomeViewModel>(), CoroutineScope {
             pref.getLong(Constants.PREF_KEY_MOVIE_ID, 0L)
         )
     }
-
-    private lateinit var trendingAdapter : TrendingAdapter
-    private lateinit var similarAdapter: SimilarAdapter
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View =
         FragmentHomeBinding.inflate(inflater, container, false).also { binding = it }.root
@@ -116,6 +115,11 @@ internal class HomeFragment : BaseFragment<HomeViewModel>(), CoroutineScope {
         }
 
         rvRecommendMovie.adapter = similarAdapter
+
+        // 새로고침 버튼
+        btnError.setOnClickListener {
+            viewModel.fetchData()
+        }
     }
 
     /**
@@ -190,6 +194,12 @@ internal class HomeFragment : BaseFragment<HomeViewModel>(), CoroutineScope {
         super.onDestroy()
         job.cancel()
         coroutineContext.cancel()
+    }
+
+    override fun onResume() {
+        super.onResume()
+        initViews()
+        viewModel.fetchData()
     }
 
 }

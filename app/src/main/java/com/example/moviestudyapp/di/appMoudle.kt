@@ -78,6 +78,7 @@ internal val appModule = module {
     factory { GetMovieDetailUseCase(get()) }
     factory { GetCreditsUseCase(get()) }
     factory { GetSearchMoviesUseCase(get()) }
+    factory { GetSearchPersonUseCase(get()) }
     // 키워드 관련
     factory { InsertKeywordUseCase(get()) }
     factory { SelectKeywordListsUseCase(get()) }
@@ -94,7 +95,7 @@ internal val appModule = module {
      * ViewModel
      * */
     viewModel { (movieId : Long?) -> HomeViewModel(movieId, get(), get()) }
-    viewModel { (movieId : Long?) -> MovieDetailViewModel(movieId, get(), get(), get(), get(), get()) }
+    viewModel { (movieId : Long?) -> MovieDetailViewModel(movieId, get(), get(), get(), get(), get(), get()) }
     viewModel { SearchMovieViewModel(get(), get(), get(), get()) }
     viewModel { MyPageViewModel(get(), get()) }
 
