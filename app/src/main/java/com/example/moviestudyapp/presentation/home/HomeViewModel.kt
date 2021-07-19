@@ -1,6 +1,5 @@
 package com.example.moviestudyapp.presentation.home
 
-import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -20,6 +19,9 @@ internal class HomeViewModel(
     private var _homeLiveData = MutableLiveData<HomeState>(HomeState.UnInitialized)
     val homeLiveData : LiveData<HomeState> = _homeLiveData
 
+    /**
+     * 트랜드 영화 조회, 추천 영화 조회
+     * */
     override fun fetchData(): Job = viewModelScope.launch {
         _homeLiveData.postValue(HomeState.Loading)
         try {

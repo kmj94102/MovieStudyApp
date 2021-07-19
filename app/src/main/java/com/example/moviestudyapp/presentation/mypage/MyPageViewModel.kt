@@ -18,6 +18,9 @@ internal class MyPageViewModel(
     private var _myPageLiveData = MutableLiveData<MyPageState>(MyPageState.UnInitialized)
     val myPageLiveData : LiveData<MyPageState> = _myPageLiveData
 
+    /**
+     * 내 영화 - 북마크, 좋아요 리스트 조회
+     * */
     override fun fetchData(): Job = viewModelScope.launch {
         _myPageLiveData.postValue(MyPageState.Loading)
         try {

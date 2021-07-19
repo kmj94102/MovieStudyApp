@@ -25,6 +25,9 @@ internal class MovieDetailViewModel(
     private var _movieDetailLiveData = MutableLiveData<MovieDetailState>(MovieDetailState.UnInitialized)
     var movieDetailLiveData : LiveData<MovieDetailState> = _movieDetailLiveData
 
+    /**
+     * 영화 상세 조회, 출연 인물 조회, 내 영화 정보 조회
+     * */
     override fun fetchData(): Job = viewModelScope.launch {
         _movieDetailLiveData.postValue(MovieDetailState.Loading)
         try {
@@ -38,17 +41,30 @@ internal class MovieDetailViewModel(
         }
     }
 
+    /**
+     * 인물 상세 조회
+     * */
     fun getSearchPersonInfo(name: String?, id : Long?) = viewModelScope.launch {
-        val personInfo = getSearchPersonUseCase(name).results.find { it.id == id }
-        personInfo?.let {
-            _movieDetailLiveData.postValue(MovieDetailState.PersonSearchSuccess(it))
-        } ?:_movieDetailLiveData.postValue(MovieDetailState.PersonSearchError)
+        try{
+            val personInfo = getSearchPersonUseCase(name).results.find { it.id == id }
+            personInfo?.let {
+                _movieDetailLiveData.postValue(MovieDetailState.PersonSearchSuccess(it))
+            } ?:_movieDetailLiveData.postValue(MovieDetailState.PersonSearchError)
+        }catch (e : Exception){
+            _movieDetailLiveData.postValue(MovieDetailState.PersonSearchError)
+        }
     }
 
+    /**
+     * 내 영화 정보 추가 (신규)
+     * */
     fun insertMyMovie(myMovie : MyMovie) = viewModelScope.launch{
         insertMyMovieUseCase(myMovie)
     }
 
+    /**
+     * 내 영화 정보 수정
+     * */
     fun updateMyMovie(isBookMark: Boolean, isLike: Boolean, myVoteAverage : Float, memo : String, movieId : Long?) = viewModelScope.launch {
         updateMyMovieUseCase(isBookMark, isLike, myVoteAverage, memo, movieId)
     }

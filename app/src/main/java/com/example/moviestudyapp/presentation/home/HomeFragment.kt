@@ -140,7 +140,6 @@ internal class HomeFragment : BaseFragment<HomeViewModel>(), CoroutineScope {
             initViews()
         }
 
-        progressBar.isVisible = false
         successViewVisible()
 
         trendingAdapter.addTrendingList(homeState.trendingList.results)
@@ -153,7 +152,6 @@ internal class HomeFragment : BaseFragment<HomeViewModel>(), CoroutineScope {
      * 에러 상태 설정
      * */
     private fun handleErrorState() = with(binding){
-        progressBar.isVisible = false
         errorViewVisible()
     }
 
@@ -161,6 +159,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel>(), CoroutineScope {
      * 완료 상태 시 보여줄 뷰 활성화 설정
      * */
     private fun successViewVisible() = with(binding){
+        progressBar.isVisible = false
         txtTrending.isVisible = true
         vpTrending.isVisible = true
         txtMovieTitle.isVisible = true
@@ -168,6 +167,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel>(), CoroutineScope {
         ratingBar.isVisible = true
         txtRecommendMovie.isVisible = true
         rvRecommendMovie.isVisible = true
+        scrollView.isVisible = true
         txtError.isVisible = false
         btnError.isVisible = false
     }
@@ -176,6 +176,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel>(), CoroutineScope {
      * 에러 상태 시 보여줄 뷰 활성화 설정
      * */
     private fun errorViewVisible() = with(binding){
+        progressBar.isVisible = false
         txtTrending.isVisible = false
         vpTrending.isVisible = false
         txtMovieTitle.isVisible = false
@@ -183,6 +184,7 @@ internal class HomeFragment : BaseFragment<HomeViewModel>(), CoroutineScope {
         ratingBar.isVisible = false
         txtRecommendMovie.isVisible = false
         rvRecommendMovie.isVisible = false
+        scrollView.isVisible = false
         txtError.isVisible = true
         btnError.isVisible = true
     }
